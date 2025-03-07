@@ -13,9 +13,9 @@ def find_last_person(n):
     index = 0  # 從第一個人開始
 
     while len(people) > 1:
-        # 移除第 3 位 +2
-        index = (index + 2)
-        print(people[index]) # 被移除的人
+        # 移除第 3 位所以須+2，% 若超過長度則回到第一位
+        index = (index + 2) % len(people)  
+        # print(people[index]) # 被移除的人
         people.pop(index)  # 移除報到 3 的人
 
     return int(people[0])  # 回傳最後剩下的順位
