@@ -12,3 +12,19 @@
 # H 3
 # ....(繼續印下去)"
 # ---------------------------------------------------------------------------- #
+
+def count_letters(text):
+    # text 轉大寫，去空格
+    char = text.upper().replace(" ", "")
+    char_dict = {}
+    for i in char:
+        if i in char_dict:
+            char_dict[i] += 1
+        else:
+            char_dict[i] = 1
+    
+    for key, value in sorted(char_dict.items()):
+        print(key, value)
+
+sentence  = "Hello welcome to Cathay 60th year anniversary"
+count_letters(sentence)
