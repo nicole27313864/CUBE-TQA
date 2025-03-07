@@ -7,3 +7,22 @@
 # 輸入：n值(0-100)
 # 輸出：第幾順位
 # ---------------------------------------------------------------------------- #
+
+def find_last_person(n):
+    people = list(range(1, n + 1))  # 建立 1~n 的人員列表
+    index = 0  # 從第一個人開始
+
+    while len(people) > 1:
+        # 移除第 3 位 +2
+        index = (index + 2)
+        print(people[index]) # 被移除的人
+        people.pop(index)  # 移除報到 3 的人
+
+    return int(people[0])  # 回傳最後剩下的順位
+
+# 測試
+n = int(input("請輸入人數 (0-100): "))
+if 0 < n and n <= 100:
+    print(f"第 {find_last_person(n)} 順位")
+else:
+    print("請輸入範圍內的數字")
