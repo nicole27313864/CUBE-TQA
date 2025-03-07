@@ -6,3 +6,11 @@
 # 輸入: [35, 46, 57, 91, 29]
 # 輸出: [53, 64, 75, 19, 92]
 # ---------------------------------------------------------------------------- #
+def correct_grades(wrong_grades):
+    result = []
+    for i in wrong_grades:
+        result.append(int(str(i)[::-1]))
+    return result
+
+wrong_scores = [35, 46, 57, 91, 29]
+print(correct_grades(wrong_scores))
