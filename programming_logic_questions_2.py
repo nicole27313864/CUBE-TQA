@@ -16,13 +16,15 @@
 def count_letters(text):
     # text 轉大寫，去空格
     char = text.upper().replace(" ", "")
+    # 建立字典
     char_dict = {}
+    # 計算字母出現次數
     for i in char:
         if i in char_dict:
             char_dict[i] += 1
         else:
             char_dict[i] = 1
-    
+    # 依照字母順序 print 出字母及次數
     for key, value in sorted(char_dict.items()):
         print(key, value)
 
