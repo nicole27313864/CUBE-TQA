@@ -1,10 +1,12 @@
 import os
 import subprocess
+import time
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from appium.webdriver.common.appiumby import AppiumBy
+from selenium.webdriver.common.by import By
 
 # 
 # --------------------------- init global variables -------------------------- #
@@ -104,6 +106,8 @@ options.app_package = "com.android.chrome"  # Chrome 瀏覽器的套件名稱
 options.app_activity = "com.google.android.apps.chrome.Main"  # Chrome 瀏覽器的啟動 Activity
 options.no_reset = True  # 不重置應用程式狀態
 options.full_reset = False  # 不重置應用程式狀態
+# options.chromedriver_executable = "D:/APP/chrome-win64/chromedriver.exe"  # 指定 ChromeDriver 路徑
+options.chromedriver_executable = "D:\\APP\\chrome-win64\\chromedriver.exe"  # 指定 ChromeDriver 路徑
 
 # 初始化，關閉 Chrome 瀏覽器
 # AddStep("[初始化]關閉 Chrome 瀏覽器")
@@ -112,6 +116,8 @@ result = subprocess.run(["adb", "shell", "am", "force-stop", "com.android.chrome
 # 啟動 Chrome 瀏覽器
 AddStep("[初始化]啟動 Chrome 瀏覽器")
 driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
+# driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", options=options)
+
 
 # 關閉 Chrome 瀏覽器內的所有分頁
 # AddStep("[初始化]關閉 Chrome 瀏覽器內的所有分頁")
@@ -125,7 +131,7 @@ AddStep("開啟國泰世華銀行網站，並將畫面截圖")
 # driver.get("https://www.cathaybk.com.tw/cathaybk/")
 try:
     # 等待網站 logo 出現
-    element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((AppiumBy.ACCESSIBILITY_ID, "cathaybk")))
+    WebElement = WebDriverWait(driver, 20).until(EC.presence_of_element_located((AppiumBy.ACCESSIBILITY_ID, "cathaybk")))
 
     AddCheckPass("成功進入首頁")
     take_screenshot(driver) # 截圖
@@ -143,6 +149,43 @@ try:
     # 點選左上角選單
     menu_burger = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().className(\"android.view.View\").instance(5)")
     menu_burger.click()
+    time.sleep(1)
 
+    # 點選【個人金融】
+    WebElement  = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"產品介紹\")")
+    WebElement.click()
+    time.sleep(1)
+
+    # 點選【信用卡】
+    WebElement = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"信用卡\")")
+    WebElement.click()
+    time.sleep(1)
+
+    # 計算【信用卡】選擔下項目數量 (class = "lnk_Link")
+    item_count = len(driver.find_elements(by=AppiumBy.XPATH, value="//*[@resource-id='lnk_Link']"))
+    if item_count:
+        take_screenshot(driver)
+        AddCheckPass(f"成功進入信用卡列表，共有 {item_count} 個項目")
+    else:
+        AddCheckFail("沒有找到信用卡列表項目")
+
+except Exception as e:
+    AddCheckFail(f"網站載入超時或發生錯誤：{e}")
+
+
+# ---------------------------------------------------------------------------- #
+# Step 3: 個人金融 > 產品介紹 > 信用卡 > 卡片介紹 > 計算頁面上所有(停發)信用卡數量並截圖。
+# 預期結果: 1. 進入信用卡列表選單後計算(停發)信用卡數量並截圖
+#          2. 比對計算(停發)信用卡數量與截圖數量相同
+# ---------------------------------------------------------------------------- #
+AddStep("進入信用卡【卡片介紹】計算頁面上所有(停發)信用卡數量並截圖")
+try:
+    # 點選【卡片介紹】
+    WebElement = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"卡片介紹\")")
+    WebElement.click()
+    time.sleep(1)
+
+    # 計算【(停發)信用卡】數量
+    time.sleep(1)
 except Exception as e:
     AddCheckFail(f"網站載入超時或發生錯誤：{e}")
