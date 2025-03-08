@@ -151,7 +151,7 @@ except Exception as e:
 # ---------------------------------------------------------------------------- #
 AddStep("點選左上角選單，進入 個人金融 > 產品介紹 > 信用卡列表，需計算有幾個項目並將畫面截圖")
 try:
-    # 點選左上角選單
+    # 點選【漢堡選單】
     menu_burger = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().className(\"android.view.View\").instance(5)")
     menu_burger.click()
     time.sleep(1)
